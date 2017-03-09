@@ -6,12 +6,24 @@
     <script src="java.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link rel="stylesheet" href="css.css">
+    <link href="http://fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css">
 </head>
 
-<table border="10" cellspacing="0" cellpadding="10">
+<center><p>Current:</p>
+<div id="place"></div>
+<div id="temp"></div>
+<div id="lives"></div>
+<div id="precp"></div>
+    <div id="dress"></div>
+</body><br>
+<br></center>
+
+<table border="1" cellspacing="1" cellpadding="5">
     <tr>
-        <td><textarea rows="1" cols="30" id="userSearch"></textarea><br>Search</td>
+        <td><input type="text" id="userSearch" onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('btnSearch').click()" /></td>
     </tr>
 </table>
 
-<button onclick="search()">Search</button>
+<input type="button" id="btnSearch" value="Search" onclick="search();" />
