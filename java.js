@@ -43,7 +43,8 @@ function weatherCheck(lon, lat) {
             weatherDress();
             document.getElementById("tempf").innerHTML = "Temperature:" + " " + Math.round(ok.currently.temperature) + " " +"°F";
             document.getElementById("tempc").innerHTML = "Temperature:" + " " + Math.round((ok.currently.temperature - 32) * 5/9) + " " +"°C";
-            document.getElementById("lives").innerHTML =  "Humidity:" + " " + ok.currently.humidity * 100 + "%";
+            document.getElementById("wind").innerHTML = "Wind Speed:" + " " + Math.round((ok.currently.windSpeed)) + " " + "MPH";
+            document.getElementById("lives").innerHTML =  "Humidity:" + " " + Math.round(ok.currently.humidity * 100) + "%";
         },
         error: function() {
             alert('Weather not working.');
@@ -55,14 +56,14 @@ function weatherCheck(lon, lat) {
 
 function weatherDress() {
     if (windmph >= 25) {
-        document.getElementById("dress").innerHTML = "It's windy! "
+        document.getElementById("dress").innerHTML = "It's windy, wind breaker would be nice!"
     }
     if (temp < 32) {
-        document.getElementById("dress").innerHTML += "Wow, it's pretty cold out! You should try wearing under layers!"
+        document.getElementById("dress").innerHTML += "Wow, it's pretty cold out! You should try wearing under layers and a jacket!"
     } else if (temp < 60) {
         document.getElementById("dress").innerHTML += "Kinda chilly, but not too bad. Just throw thick jacket over whatever you're wearing!"
     } else if (temp < 75) {
-        document.getElementById("dress").innerHTML += "It's pretty nice out, not too hot, not too cold. Should be fine with just the formal wear, no under layers or jackets!"
+        document.getElementById("dress").innerHTML += "It's pretty nice out, not too hot, not too cold. Should be fine, no under layers or jackets needed!"
     }
 }
 
