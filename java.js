@@ -2,7 +2,8 @@
  * Created by h205p3 on 2/15/17.
  */
 
-var temp = 0
+var temp = 0;
+var windmph = 0;
 
 function search() {
     var userSearch = document.getElementById("userSearch").value;
@@ -34,12 +35,15 @@ function weatherCheck(lon, lat) {
         crossDomain: true,
         dataType: 'jsonp',
         success: function(ok) {
+            document.getElementById("dress").innerHTML = "";
             console.log(ok);
             temp = ok.currently.temperature;
+            windmph = ok.currently.windSpeed;
+            console.log(windmph);
             weatherDress();
-            document.getElementById("temp").innerHTML = "Temperature:" + " " + ok.currently.temperature + " " +"°F";
+            document.getElementById("tempf").innerHTML = "Temperature:" + " " + Math.round(ok.currently.temperature) + " " +"°F";
+            document.getElementById("tempc").innerHTML = "Temperature:" + " " + Math.round((ok.currently.temperature - 32) * 5/9) + " " +"°C";
             document.getElementById("lives").innerHTML =  "Humidity:" + " " + ok.currently.humidity * 100 + "%";
-
         },
         error: function() {
             alert('Weather not working.');
@@ -50,26 +54,15 @@ function weatherCheck(lon, lat) {
 }
 
 function weatherDress() {
-    var dress = prompt("Do you dress like a male or female?");
-    if (dress = "male".toLowerCase()) {
-        console.log("MAAAN");
-        var how = howToDressM();
-    } else if (dress = "female".toLowerCase()) {
-        console.log("GIIIIRL");
-        var wow = howToDressF();
+    if (windmph >= 25) {
+        document.getElementById("dress").innerHTML = "It's windy! "
     }
-
-}
-
-function howToDressM() {
-    var ans = prompt("Do you want to dress formal or casual?");
-    if (ans = "Formal".toLowerCase()) {
-        if (temp < 32) {
-            document.getElementById("dress").innerHTML = "Wow, it's pretty cold out! You should try wearing layers under your formal wear!"
-        } else if (temp < 55) {
-            document.getElementById("dress").innerHTML = "Kinda chilly, but not too bad. Just throw thick jacket over whatever you're wearing!"
-        }
+    if (temp < 32) {
+        document.getElementById("dress").innerHTML += "Wow, it's pretty cold out! You should try wearing under layers!"
+    } else if (temp < 60) {
+        document.getElementById("dress").innerHTML += "Kinda chilly, but not too bad. Just throw thick jacket over whatever you're wearing!"
+    } else if (temp < 75) {
+        document.getElementById("dress").innerHTML += "It's pretty nice out, not too hot, not too cold. Should be fine with just the formal wear, no under layers or jackets!"
     }
-
 }
 
