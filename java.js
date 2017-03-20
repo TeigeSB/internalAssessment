@@ -4,6 +4,7 @@
 
 var temp = 0;
 var windmph = 0;
+var windir = 0;
 
 function search() {
     var userSearch = document.getElementById("userSearch").value;
@@ -20,7 +21,7 @@ function search() {
             lon = result.features[0].geometry.coordinates[1];
             weatherCheck(lon, lat);
             document.getElementById("place").innerHTML = result.features[0].place_name;
-            document.getElementById("userSearch").innerHTML = ""
+            document.getElementById("userSearch").value = ""
         },
         error: function () {
             alert('Enter a place!');
@@ -35,15 +36,16 @@ function weatherCheck(lon, lat) {
         crossDomain: true,
         dataType: 'jsonp',
         success: function(ok) {
-            document.getElementById("dress").innerHTML = "";
             console.log(ok);
             temp = ok.currently.temperature;
             windmph = ok.currently.windSpeed;
-            console.log(windmph);
+            windir = Math.round(ok.currently.windBearing);
+            var dir = windDir(windir);
             weatherDress();
-            document.getElementById("tempf").innerHTML = "Temperature:" + " " + Math.round(ok.currently.temperature) + " " +"°F";
-            document.getElementById("tempc").innerHTML = "Temperature:" + " " + Math.round((ok.currently.temperature - 32) * 5/9) + " " +"°C";
-            document.getElementById("wind").innerHTML = "Wind Speed:" + " " + Math.round((ok.currently.windSpeed)) + " " + "MPH";
+            document.getElementById("summ").innerHTML = ok.currently.summary;
+            document.getElementById("tempf").innerHTML = "Temperature:" + " " + Math.round(temp) + " " +"°F";
+            document.getElementById("tempc").innerHTML = "Temperature:" + " " + Math.round((temp - 32) * 5/9) + " " +"°C";
+            document.getElementById("wind").innerHTML = "Wind Speed:" + " " + Math.round((windmph)) + " " + "MPH, in the " + dir + " direction";
             document.getElementById("lives").innerHTML =  "Humidity:" + " " + Math.round(ok.currently.humidity * 100) + "%";
         },
         error: function() {
@@ -55,15 +57,60 @@ function weatherCheck(lon, lat) {
 }
 
 function weatherDress() {
-    if (windmph >= 25) {
-        document.getElementById("dress").innerHTML = "It's windy, wind breaker would be nice!"
-    }
-    if (temp < 32) {
-        document.getElementById("dress").innerHTML += "Wow, it's pretty cold out! You should try wearing under layers and a jacket!"
-    } else if (temp < 60) {
-        document.getElementById("dress").innerHTML += "Kinda chilly, but not too bad. Just throw thick jacket over whatever you're wearing!"
-    } else if (temp < 75) {
-        document.getElementById("dress").innerHTML += "It's pretty nice out, not too hot, not too cold. Should be fine, no under layers or jackets needed!"
+    var wind = "It's windy, a wind breaker would be nice! ";
+    if (windmph >= 20) {
+        if (temp < 0) {
+            document.getElementById("dress").innerHTML = wind + "Wow. It's freezing. Dress up nice and cozy or you're gonna die."
+        } else if (temp < 32) {
+            document.getElementById("dress").innerHTML = wind + "It's pretty cold out! You should try wearing under layers and a jacket!"
+        } else if (temp < 60) {
+            document.getElementById("dress").innerHTML = wind + "Kinda chilly, but not too bad. Just throw a jacket over whatever you're wearing!"
+        } else if (temp < 80) {
+            document.getElementById("dress").innerHTML = wind + "It's pretty nice out, not too hot, not too cold. Should be fine, no under layers or jackets needed!"
+        } else {
+            document.getElementById("dress").innerHTML = wind + "Hot hot hot! Shorts and T Shirts! Go swimming!"
+        }
+    } else {
+        if (temp < 0) {
+            document.getElementById("dress").innerHTML = "Wow. It's freezing. Dress up nice and cozy or you're gonna die."
+        } else if (temp < 32) {
+            document.getElementById("dress").innerHTML = "It's pretty cold out! You should try wearing under layers and a jacket!"
+        } else if (temp < 60) {
+            document.getElementById("dress").innerHTML = "Kinda chilly, but not too bad. Just throw a jacket over whatever you're wearing!"
+        } else if (temp < 80) {
+            document.getElementById("dress").innerHTML = "It's pretty nice out, not too hot, not too cold. Should be fine, no under layers or jackets needed!"
+        } else {
+            document.getElementById("dress").innerHTML = "Hot hot hot! Shorts and T Shirts! Go swimming!"
+        }
     }
 }
 
+function windDir(dir) {
+    var just = '';
+    if (dir == 0) {
+        just = "North"
+    } else if (dir == 90) {
+        just = "East"
+    } else if (dir == 180) {
+        just = "South"
+    } else if (dir == 270) {
+        just = "West"
+    } else if (dir > 0 && dir <= 45) {
+        just = "North-east"
+    } else if (dir > 45 && dir < 90) {
+        just = "North-east-east"
+    } else if (dir > 90 && dir <= 145) {
+        just = "South-east-east"
+    } else if  (dir > 145 && dir < 180) {
+        just = "South-east"
+    } else if (dir > 180 && dir <= 225) {
+        just = "South-west"
+    } else if (dir > 225 && dir < 270) {
+        just = "South-west-west"
+    } else if (dir > 270 && dir <= 315) {
+        just = "North-west-west"
+    } else if (dir > 315 && dir <= 359) {
+        just = "North-west"
+    }
+    return just
+}
