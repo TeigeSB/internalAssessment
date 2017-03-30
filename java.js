@@ -74,18 +74,15 @@ function what (temp, wear) {
 }
 
 function weatherDress() {
-    var wind = "It's windy, a wind breaker would be nice! ";
-    var rain = "It is raining. Sorry. ";
     if (wet == "rain") {
-        what(temp, rain)
-    } else {
-        if (windmph >= 20) {
-            what(temp, wind)
+        what(temp, "It is raining. Sorry. ")
+    } else if (windmph >= 20) {
+            what(temp, "It's windy, a wind breaker would be nice! ")
         } else {
             what(temp, "")
         }
     }
-}
+
 
 function windDir(dir) {
     var just = '';
